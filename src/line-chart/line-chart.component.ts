@@ -5,7 +5,8 @@ import {
   ViewChild,
   ElementRef,
 } from '@angular/core';
-import { createChart } from 'lightweight-charts';
+
+import { ChartService } from '../chart.service';
 
 @Component({
   selector: 'app-line-chart',
@@ -17,7 +18,7 @@ export class LineChartComponent implements OnInit, AfterViewInit {
   @ViewChild('chartcontainer')
   chartContainer!: ElementRef;
 
-  constructor() {}
+  constructor(private chartService: ChartService) {}
 
   ngOnInit() {}
 
@@ -29,7 +30,7 @@ export class LineChartComponent implements OnInit, AfterViewInit {
   }
 
   createChart() {
-    const chart = createChart(this.chartContainer.nativeElement, {
+    const chart = this.chartService.createChart(this.chartContainer.nativeElement, {
       width: 400,
       height: 300,
     });

@@ -10,7 +10,8 @@ import { LineChartComponent } from './line-chart/line-chart.component';
   imports: [CommonModule, LineChartComponent],
   template: `
     <h1>Lightweight Charts Examples</h1>
-    <p>Made with Angular</p>
+    <p>This is a short demo and playground to use <a href="https://tradingview.github.io/lightweight-charts/" target="_blank">Lightweight Charts™</a> with <a href="https://angular.io/" target="_blank">Angular</a>.</p>
+    
     <app-line-chart></app-line-chart>
   `,
 })
