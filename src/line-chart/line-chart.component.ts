@@ -5,6 +5,7 @@ import {
   ViewChild,
   ElementRef,
   Input,
+  HostListener,
 } from '@angular/core';
 
 import { Prices } from '../prices';
@@ -20,7 +21,14 @@ export class LineChartComponent implements OnInit, AfterViewInit {
   @ViewChild('chartcontainer')
   chartContainer!: ElementRef;
 
+  @HostListener('window:resize', [])
+  onResize() {
+    this.resize();
+  }
+
   @Input() prices!: Prices[];
+
+  chart!: any;
 
   constructor(private chartService: ChartService) {}
 
@@ -31,7 +39,7 @@ export class LineChartComponent implements OnInit, AfterViewInit {
   }
 
   createChart() {
-    const chart = this.chartService.createChart(
+    this.chart = this.chartService.createChart(
       this.chartContainer.nativeElement,
       {
         width: this.chartContainer.nativeElement.clientWidth,
@@ -39,9 +47,14 @@ export class LineChartComponent implements OnInit, AfterViewInit {
       }
     );
 
-    const lineSeries = chart.addLineSeries();
+    const lineSeries = this.chart.addLineSeries();
     lineSeries.setData(this.prices);
 
-    chart.timeScale().fitContent();
+    this.chart.timeScale().fitContent();
+  }
+
+  resize() {
+    this.chart.resize(this.chartContainer.nativeElement.clientWidth, 400);
+    this.chart.timeScale().fitContent();
   }
 }
