@@ -4,8 +4,10 @@ import {
   OnInit,
   ViewChild,
   ElementRef,
+  Input,
 } from '@angular/core';
 
+import { Prices } from '../prices';
 import { ChartService } from '../chart.service';
 
 @Component({
@@ -18,35 +20,28 @@ export class LineChartComponent implements OnInit, AfterViewInit {
   @ViewChild('chartcontainer')
   chartContainer!: ElementRef;
 
+  @Input() prices!: Prices[];
+
   constructor(private chartService: ChartService) {}
 
   ngOnInit() {}
 
   ngAfterViewInit() {
-    console.log(this.chartContainer);
-    if (this.chartContainer) {
-      this.createChart();
-    }
+    this.createChart();
   }
 
   createChart() {
-    const chart = this.chartService.createChart(this.chartContainer.nativeElement, {
-      width: 400,
-      height: 300,
-    });
+    const chart = this.chartService.createChart(
+      this.chartContainer.nativeElement,
+      {
+        width: this.chartContainer.nativeElement.clientWidth,
+        height: 400,
+      }
+    );
 
     const lineSeries = chart.addLineSeries();
-    lineSeries.setData([
-      { time: '2019-04-11', value: 80.01 },
-      { time: '2019-04-12', value: 96.63 },
-      { time: '2019-04-13', value: 76.64 },
-      { time: '2019-04-14', value: 81.89 },
-      { time: '2019-04-15', value: 74.43 },
-      { time: '2019-04-16', value: 80.01 },
-      { time: '2019-04-17', value: 96.63 },
-      { time: '2019-04-18', value: 76.64 },
-      { time: '2019-04-19', value: 81.89 },
-      { time: '2019-04-20', value: 74.43 },
-    ]);
+    lineSeries.setData(this.prices);
+
+    chart.timeScale().fitContent();
   }
 }
